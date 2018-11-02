@@ -1,0 +1,124 @@
+#:import Clipboard kivy.core.clipboard.Clipboard
+
+Root:
+    orientation: 'vertical'
+
+    BoxLayout:
+        size_hint_y: None
+        height:title_label.height
+        Label:
+            id: title_label
+            height: self.texture_size[1]
+            size_hint_y:None
+            text: 'YT Downloader'
+            color: .5,.6,.7,1
+            font_size: '50sp'
+    BoxLayout:
+        size_hint_y: None
+        height:urlLab.height
+        Label:
+            id: urlLab
+            text: 'Video URL:'
+            size_hint_x: None
+            size_hint_y: None
+            size: self.texture_size
+            font_size: '50sp'
+        TextInput:
+            id: urlInput
+            font_size: '40sp'
+            multiline: False
+    BoxLayout:
+        size_hint_y: None
+        height:pasteButton.height
+        Button:
+            id: pasteButton
+            # Following canvas will make a routed button
+            background_color: 0,0,0,0  # the last zero is the critical one, make invisible
+            canvas.before:
+                Color:
+                    rgba: (.4,.4,.4,1) if self.state=='normal' else (0,.7,.7,1)  # visual feedback of press
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [25,]
+            text: 'Paste'
+            size_hint_y: None
+            height:self.texture_size[1]
+            on_release: urlInput.text=Clipboard.paste()
+            font_size:'50sp'
+        Button:
+            text: 'Clear URL'
+            # Following canvas will make a routed button
+            background_color: 0,0,0,0  # the last zero is the critical one, make invisible
+            canvas.before:
+                Color:
+                    rgba: (.4,.4,.4,1) if self.state=='normal' else (0,.7,.7,1)  # visual feedback of press
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [25,]
+            size_hint_y: None
+            height:self.texture_size[1]
+            on_release: urlInput.text=''
+            font_size:'50sp'
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            size_hint_y: None
+            height:audioButton.height +dp(10)
+            Label:
+                id: audioButton
+                height:self.texture_size[1]
+                size_hint_y: None
+                text: 'Audio only'
+                font_size: '50sp'
+            CheckBox:
+                id: audio_only_chkbox
+                size_hint_y: None
+                height:audioButton.height
+        BoxLayout:
+            size_hint_y: None
+            height:down_dir.height
+            Label:
+                text: 'Save to:'
+                size_hint_y: None
+                height:self.texture_size[1]
+                font_size:'50sp'
+            Label:
+                id: down_dir
+                text: root.saveDir
+                height: self.texture_size[1]
+                size_hint_y: None
+                font_size: '50sp'
+        Button:
+            id: downButton
+            # Following canvas will make a routed button
+            background_color: 0,0,0,0  # the last zero is the critical one, make invisible
+            canvas.before:
+                Color:
+                    rgba: (.4,.4,.4,1) if self.state=='normal' else (0,.7,.7,1)  # visual feedback of press
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [25,]
+            text: 'Start Download'
+            size_hint_y: None
+            height:self.texture_size[1]
+            on_release: root.start_download()
+            font_size:'50sp'
+        Label:
+            id: download_label
+            text: root.downStatus
+            font_color: .2,.3,.4,1
+            font_size:'35sp'
+            text_size: self.size # Set this so text will wrap
+
+        ProgressBar:
+            id: progBar
+            max:100
+            value:root.progNum
+            size_hint_y:0
+            height: 20
+        
+
