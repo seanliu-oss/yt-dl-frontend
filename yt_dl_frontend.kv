@@ -12,7 +12,7 @@ Root:
             size_hint_y:None
             text: 'YT Downloader'
             color: .5,.6,.7,1
-            font_size: '50sp'
+            font_size: '25sp'
     BoxLayout:
         size_hint_y: None
         height:urlLab.height
@@ -22,10 +22,10 @@ Root:
             size_hint_x: None
             size_hint_y: None
             size: self.texture_size
-            font_size: '50sp'
+            font_size: '25sp'
         TextInput:
             id: urlInput
-            font_size: '40sp'
+            font_size: '20sp'
             multiline: False
     BoxLayout:
         size_hint_y: None
@@ -45,7 +45,7 @@ Root:
             size_hint_y: None
             height:self.texture_size[1]
             on_release: urlInput.text=Clipboard.paste()
-            font_size:'50sp'
+            font_size:'25sp'
         Button:
             text: 'Clear URL'
             # Following canvas will make a routed button
@@ -60,7 +60,7 @@ Root:
             size_hint_y: None
             height:self.texture_size[1]
             on_release: urlInput.text=''
-            font_size:'50sp'
+            font_size:'25sp'
     BoxLayout:
         orientation: 'vertical'
 
@@ -72,7 +72,7 @@ Root:
                 height:self.texture_size[1]
                 size_hint_y: None
                 text: 'Audio only'
-                font_size: '50sp'
+                font_size: '25sp'
             CheckBox:
                 id: audio_only_chkbox
                 size_hint_y: None
@@ -84,13 +84,13 @@ Root:
                 text: 'Save to:'
                 size_hint_y: None
                 height:self.texture_size[1]
-                font_size:'50sp'
+                font_size: '25sp'
             Label:
                 id: down_dir
                 text: root.saveDir
                 height: self.texture_size[1]
                 size_hint_y: None
-                font_size: '50sp'
+                font_size: '25sp'
         Button:
             id: downButton
             # Following canvas will make a routed button
@@ -106,12 +106,12 @@ Root:
             size_hint_y: None
             height:self.texture_size[1]
             on_release: root.start_download()
-            font_size:'50sp'
+            font_size: '25sp'
         Label:
             id: download_label
             text: root.downStatus
             font_color: .2,.3,.4,1
-            font_size:'35sp'
+            font_size: '20sp'
             text_size: self.size # Set this so text will wrap
 
         ProgressBar:
