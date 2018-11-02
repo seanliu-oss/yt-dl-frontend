@@ -1,3 +1,3 @@
-title=youtube-dl
-author=Sean
+title=youtube-dl frontend
+author=Sean Liu
 orientation=portrait
