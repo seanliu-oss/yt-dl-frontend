@@ -2,7 +2,8 @@
 
 Root:
     orientation: 'vertical'
-
+    spacing:10
+    padding: root.width*0.02
     BoxLayout:
         size_hint_y: None
         height:title_label.height
@@ -30,6 +31,7 @@ Root:
     BoxLayout:
         size_hint_y: None
         height:pasteButton.height
+        spacing: root.width*0.02
         Button:
             id: pasteButton
             # Following canvas will make a routed button

@@ -102,6 +102,7 @@ class Root(BoxLayout):
         
         '''
         if d['status'] == 'downloading':
+            self.ids['downButton'].disabled=True
             self.percentDown=int(d['_percent_str'].split('.')[0]) //10 *10
             if self.percentDown > self.previousPercentDown:
                 progTxt='{} percent Downloaded'.format(d['_percent_str'])
@@ -111,6 +112,7 @@ class Root(BoxLayout):
                 return
         if d['status'] == 'finished':
             self.downStatus= "Finished..."
+            self.previousPercentDown=0
             self.progNum=100
         self.ids['downButton'].disabled=False
 
