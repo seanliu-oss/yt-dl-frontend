@@ -64,14 +64,16 @@ class Root(BoxLayout):
             'progress_hooks': [self.prog_hook],
             'outtmpl':'%(title)s.%(ext)s',
             'ignoreerrors': True,
+            'updatetime': False
             #'restrictfilenames': True,
         }
-        if self._down_path:
-            print("Output Template:"+'/'.join([self._down_path,ydl_opts['outtmpl']]))
-            ydl_opts['outtmpl']='/'.join([self._down_path,ydl_opts['outtmpl']])
         if audioOnly:
+            ydl_opts['format']='bestaudio/best'
             ydl_opts['outtmpl']='%(title)s.mp3'
             ydl_opts['audioformat']='mp3'
+        if self._down_path:
+            ydl_opts['outtmpl']='/'.join([self._down_path,ydl_opts['outtmpl']])
+            print("Output Template:"+ydl_opts['outtmpl'])
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
 
