@@ -46,10 +46,10 @@ requirements = kivy,youtube-dl,pyopenssl,openssl
 #garden_requirements =
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = %(source.dir)s/splash.jpg
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)s/yt_dl_frontend_icon.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = all
