@@ -99,11 +99,12 @@ class Root(BoxLayout):
         prog_hook(self,d)
             Progress hood for the download
             Use @mainthread decorator to make sure it updates GUI
-            Updates wh the progress exceed multiples of 10 to reduce visual updates
+            Updates when the progress exceed multiples of 10 to reduce visual updates
             Updates progNum property which will be picked up by progBar 
         
         '''
         if d['status'] == 'downloading':
+            self.downStatus= "Downloading..."
             self.ids['downButton'].disabled=True
             self.percentDown=int(d['_percent_str'].split('.')[0]) //10 *10
             if self.percentDown > self.previousPercentDown:
@@ -126,7 +127,6 @@ class Root(BoxLayout):
         '''
         urlInput = self.ids['urlInput']
         url=urlInput.text
-        self.downStatus= 'Downloading...'
         self.previousPercentDown=0
         self.progNum=0
         audioOnly=self.ids['audio_only_chkbox'].active
