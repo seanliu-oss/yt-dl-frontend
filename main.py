@@ -90,7 +90,7 @@ class Root(BoxLayout):
             Argument: msg passed in by youtube-dl
         '''
         print(msg)
-        self.downStatus= "Oops something went wrong..."+msg[:100]
+        self.downStatus= "Oops something went wrong..."+msg[:300]
         self.ids['downButton'].disabled=False
         
     @mainthread
