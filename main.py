@@ -68,9 +68,7 @@ class Root(BoxLayout):
             #'restrictfilenames': True,
         }
         if audioOnly:
-            ydl_opts['format']='bestaudio/best'
-            ydl_opts['outtmpl']='%(title)s.mp3'
-            ydl_opts['audioformat']='mp3'
+            ydl_opts['format']='bestaudio[ext=m4a]'
         if self._down_path:
             ydl_opts['outtmpl']='/'.join([self._down_path,ydl_opts['outtmpl']])
             print("Output Template:"+ydl_opts['outtmpl'])
