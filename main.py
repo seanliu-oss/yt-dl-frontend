@@ -19,7 +19,7 @@ from kivy.clock import Clock, mainthread
 import threading
 
 import os
-
+import certifi
 import youtube_dl
 
 class Root(BoxLayout):
@@ -37,6 +37,7 @@ class Root(BoxLayout):
             downStatus: Current status of downloading
             progNum: percentage downloaded
     '''
+    _down_path=os.path.abspath('/tmp')
     if platform == 'win':
         _down_path=os.path.abspath('/download')
     if platform == 'android':
@@ -49,13 +50,14 @@ class Root(BoxLayout):
     downStatus= StringProperty("Waiting for URL")
     progNum=NumericProperty(0)
     
-    def download(self,url,audioOnly):
+    def download(self,url,audioOnly,checkSSL):
         '''
-        download(self,url,audioOnly)
+        download(self,url,audioOnly,checkSSL)
         The main download function, will be started in a seperate thread
         Arguments:
             url: URL to download
             audioOnly: A boolean that defines whether to keep audio only
+            checkSSL: A boolean that defines whether to check SSL cert validity
             Calls the debug, warning and error functions for logging
             Calls prog_book to report download status
         '''
@@ -64,11 +66,14 @@ class Root(BoxLayout):
             'progress_hooks': [self.prog_hook],
             'outtmpl':'%(title)s.%(ext)s',
             'ignoreerrors': True,
-            'updatetime': False
+            'updatetime': False,
+            'nocheckcertificate': True
             #'restrictfilenames': True,
         }
         if audioOnly:
             ydl_opts['format']='bestaudio[ext=m4a]'
+        if checkSSL:
+            ydl_opts['nocheckcertificate']=False
         if self._down_path:
             ydl_opts['outtmpl']='/'.join([self._down_path,ydl_opts['outtmpl']])
             print("Output Template:"+ydl_opts['outtmpl'])
@@ -128,8 +133,9 @@ class Root(BoxLayout):
         self.previousPercentDown=0
         self.progNum=0
         audioOnly=self.ids['audio_only_chkbox'].active
+        checkSSL=self.ids['check_cert'].active
         self.ids['downButton'].disabled=True
-        threading.Thread(target=self.download,args=(url,audioOnly)).start()
+        threading.Thread(target=self.download,args=(url,audioOnly,checkSSL)).start()
     
 class yt_dl_frontendApp(App):
     pass

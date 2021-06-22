@@ -81,6 +81,19 @@ Root:
                 height:audioButton.height
         BoxLayout:
             size_hint_y: None
+            height:sslButton.height +dp(10)
+            Label:
+                id: sslButton
+                height:self.texture_size[1]
+                size_hint_y: None
+                text: 'Check SSL'
+                font_size: '25sp'
+            CheckBox:
+                id: check_cert
+                size_hint_y: None
+                height:sslButton.height
+        BoxLayout:
+            size_hint_y: None
             height:down_dir.height
             Label:
                 text: 'Save to:'
