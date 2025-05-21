@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivy.factory import Factory
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, NumericProperty
 from kivy.utils import platform
@@ -7,10 +8,23 @@ import os
 import yt_dlp
 from plyer import notification
 
+
 class Root(BoxLayout):
     saveDir = StringProperty("")
     downStatus = StringProperty("Waiting for URL")
     progNum = NumericProperty(0)
+
+    _down_path = os.path.abspath('/tmp')
+    if platform == 'win':
+        _down_path = os.path.abspath('/download')
+    if platform == 'android':
+        _down_path = os.path.abspath('/sdcard/download')
+    try:
+        os.mkdir(_down_path)
+    except Exception:
+        pass
+
+    saveDir = StringProperty(_down_path)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -18,6 +32,7 @@ class Root(BoxLayout):
         if self.is_android:
             from android.runnable import run_on_ui_thread
             from android import mActivity
+
         else:
             self.run_on_ui_thread = lambda x: x()
 
@@ -59,7 +74,8 @@ class Root(BoxLayout):
 
         self.mServiceIntent = Intent(mActivity.getApplicationContext(), PythonActivity)
         self.mServiceIntent.setAction("org.test.yt_dl_frontend.FOREGROUND")
-        self.mServicePendingIntent = PendingIntent.getActivity(mActivity, 0, self.mServiceIntent, PendingIntent.FLAG_IMMUTABLE)
+        self.mServicePendingIntent = PendingIntent.getActivity(mActivity, 0, self.mServiceIntent,
+                                                               PendingIntent.FLAG_IMMUTABLE)
 
         channel_id = "yt_dl_channel"
         channel_name = "YT-DL Channel"
@@ -162,18 +178,11 @@ class Root(BoxLayout):
     def on_stop(self):
         self.stop_foreground_service()
 
+
 class yt_dl_frontendApp(App):
-    def build(self):
-        root = Root()
-        if platform == 'android':
-            from android import mActivity
-            _down_path = os.path.abspath('/sdcard/download')
-            try:
-                os.mkdir(_down_path)
-            except Exception:
-                pass
-            root.saveDir = _down_path
-        return root
+    pass
+
 
 if __name__ == "__main__":
+    Factory.register('Root', cls=Root)
     yt_dl_frontendApp().run()
