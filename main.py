@@ -6,35 +6,37 @@ from kivy.utils import platform
 import threading
 import os
 import yt_dlp
-from plyer import notification
 
 
 class Root(BoxLayout):
-    saveDir = StringProperty("")
-    downStatus = StringProperty("Waiting for URL")
     progNum = NumericProperty(0)
-
-    _down_path = os.path.abspath('/tmp')
-    if platform == 'win':
-        _down_path = os.path.abspath('/download')
-    if platform == 'android':
-        _down_path = os.path.abspath('/sdcard/download')
-    try:
-        os.mkdir(_down_path)
-    except Exception:
-        pass
-
-    saveDir = StringProperty(_down_path)
+    downStatus = StringProperty("Waiting for URL")
+    saveDir = StringProperty("")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.is_android = platform == "android"
         if self.is_android:
-            from android.runnable import run_on_ui_thread
-            from android import mActivity
+            try:
+                from android import mActivity
+                from android.runnable import run_on_ui_thread
+                from plyer import notification
+                from android.storage import primary_external_storage_path
 
+                self.run_on_ui_thread = run_on_ui_thread
+                _down_path = primary_external_storage_path() + "/download"
+            except ImportError as e:
+                print(f"Import error: {e}")
+                self.run_on_ui_thread = lambda x: x()
         else:
             self.run_on_ui_thread = lambda x: x()
+            _down_path = "/download"
+
+        self.saveDir = _down_path
+        try:
+            os.mkdir(self.saveDir)
+        except Exception:
+            pass
 
     def start_foreground_service(self):
         if self.is_android:
