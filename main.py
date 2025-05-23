@@ -28,11 +28,12 @@ class Root(BoxLayout):
             except ImportError as e:
                 print(f"Import error: {e}")
                 self.run_on_ui_thread = lambda x: x()
+                _down_path = "/sdcard/download"
         else:
             self.run_on_ui_thread = lambda x: x()
             _down_path = "/download"
 
-        self.saveDir = _down_path
+        self.saveDir = os.path.abspath(_down_path)
         try:
             os.mkdir(self.saveDir)
         except Exception:
@@ -120,7 +121,7 @@ class Root(BoxLayout):
         self.mServiceIntent.setAction("org.test.yt_dl_frontend.STOP_FOREGROUND")
         mActivity.stopService(self.mServiceIntent)
 
-    def download(self, url, audioOnly, checkSSL):
+    def download(self, url, audio_only, check_ssl):
         ydl_opts = {
             'logger': self,
             'progress_hooks': [self.prog_hook],
@@ -129,9 +130,13 @@ class Root(BoxLayout):
             'updatetime': False,
             'nocheckcertificate': True
         }
-        if audioOnly:
+        if audio_only:
             ydl_opts['format'] = 'bestaudio[ext=m4a]'
-        if checkSSL:
+        else:
+            # Download the video in the highest resolution available
+            ydl_opts['format'] = 'mp4[height=1080]'
+
+        if check_ssl:
             ydl_opts['nocheckcertificate'] = False
         if self.saveDir:
             ydl_opts['outtmpl'] = os.path.join(self.saveDir, ydl_opts['outtmpl'])
@@ -154,8 +159,8 @@ class Root(BoxLayout):
             self.ids['downButton'].disabled = True
             self.percentDown = int(d['_percent_str'].split('.')[0]) // 10 * 10
             if self.percentDown > getattr(self, 'previousPercentDown', 0):
-                progTxt = '{} percent Downloaded'.format(d['_percent_str'])
-                print(progTxt)
+                progress_text = f'{d['_percent_str']} percent Downloaded'
+                print(progress_text)
                 self.progNum = self.percentDown
                 self.previousPercentDown = self.percentDown
                 return
@@ -167,15 +172,15 @@ class Root(BoxLayout):
         self.ids['downButton'].disabled = False
 
     def start_download(self, *args):
-        urlInput = self.ids['urlInput']
-        url = urlInput.text
+        url_input = self.ids['urlInput']
+        url = url_input.text
         self.previousPercentDown = 0
         self.progNum = 0
-        audioOnly = self.ids['audio_only_chkbox'].active
-        checkSSL = self.ids['check_cert'].active
+        audio_only = self.ids['audio_only_chkbox'].active
+        check_ssl = self.ids['check_cert'].active
         self.ids['downButton'].disabled = True
         self.start_foreground_service()
-        threading.Thread(target=self.download, args=(url, audioOnly, checkSSL)).start()
+        threading.Thread(target=self.download, args=(url, audio_only, check_ssl)).start()
 
     def on_stop(self):
         self.stop_foreground_service()
