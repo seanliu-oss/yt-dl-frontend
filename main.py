@@ -108,7 +108,6 @@ class Root(BoxLayout):
 
     def _stop_foreground_service(self):
         from android import mActivity
-        from android.content import Intent
         PythonActivity = autoclass('org.kivy.android.PythonActivity')
         Intent = autoclass('android.content.Intent')
         Context = autoclass('android.content.Context')
