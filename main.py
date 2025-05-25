@@ -107,10 +107,9 @@ class Root(BoxLayout):
             print("Error starting service:", e)
 
     def _stop_foreground_service(self):
-        from android import mActivity
+        from android import mActivity, autoclass
         PythonActivity = autoclass('org.kivy.android.PythonActivity')
         Intent = autoclass('android.content.Intent')
-        Context = autoclass('android.content.Context')
         NotificationManagerCompat = autoclass('androidx.core.app.NotificationManagerCompat')
 
         notification_manager = NotificationManagerCompat.from_(mActivity)
