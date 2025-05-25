@@ -159,7 +159,8 @@ class Root(BoxLayout):
             self.ids['downButton'].disabled = True
             self.percentDown = int(d['_percent_str'].split('.')[0]) // 10 * 10
             if self.percentDown > getattr(self, 'previousPercentDown', 0):
-                progress_text = f'{d['_percent_str']} percent Downloaded'
+                _pct_str = d['_percent_str']
+                progress_text = f'{_pct_str} percent Downloaded'
                 print(progress_text)
                 self.progNum = self.percentDown
                 self.previousPercentDown = self.percentDown
