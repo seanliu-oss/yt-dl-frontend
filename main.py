@@ -132,7 +132,7 @@ class Root(BoxLayout):
             ydl_opts['format'] = 'bestaudio[ext=m4a]'
         else:
             # Download the video in the highest resolution available
-            ydl_opts['format'] = 'mp4[height=1080]'
+            ydl_opts['format'] = 'bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b'
 
         if check_ssl:
             ydl_opts['nocheckcertificate'] = False
