@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,yt-dlp,pyopenssl,openssl
+requirements = python3,kivy,yt-dlp,pyopenssl,openssl,plyer
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -95,7 +95,9 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = android.permission.INTERNET, android.permission.WRITE_EXTERNAL_STORAGE, android.permission.READ_EXTERNAL_STORAGE
+android.permissions =   android.permission.FOREGROUND_SERVICE, android.permission.INTERNET, \
+                        android.permission.WRITE_EXTERNAL_STORAGE, android.permission.READ_EXTERNAL_STORAGE\
+                        android.permission.READ_MEDIA_VIDEO, android.permission.READ_MEDIA_AUDIO
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
@@ -236,7 +238,10 @@ android.api = 33
 #android.ouya.icon.filename = %(source.dir)s/data/ouya_icon.png
 
 # (str) XML file to include as an intent filters in <activity> tag
-#android.manifest.intent_filters =
+# android.manifest.intent_filters = android.intent_filters.yt_dl_frontend.FOREGROUND = \
+#         action:org.test.yt_dl_frontend.FOREGROUND, category:android.intent.category.DEFAULT
+#     android.intent_filters.yt_dl_frontend.STOP_FOREGROUND = \
+#         action:org.test.yt_dl_frontend.STOP_FOREGROUND, category:android.intent.category.DEFAULT
 
 # (list) Copy these files to src/main/res/xml/ (used for example with intent-filters)
 #android.res_xml = PATH_TO_FILE,
