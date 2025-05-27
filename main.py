@@ -126,13 +126,14 @@ class Root(BoxLayout):
             'outtmpl': '%(title)s.%(ext)s',
             'ignoreerrors': True,
             'updatetime': False,
-            'nocheckcertificate': True
+            'nocheckcertificate': True,
+            'verbose': True
         }
         if audio_only:
             ydl_opts['format'] = 'bestaudio[ext=m4a]'
         else:
             # Download the video in the highest resolution available
-            ydl_opts['format'] = 'bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b'
+            ydl_opts['format'] = 'b'
 
         if check_ssl:
             ydl_opts['nocheckcertificate'] = False
